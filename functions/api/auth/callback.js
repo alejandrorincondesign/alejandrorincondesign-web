@@ -48,27 +48,40 @@ export async function onRequestGet({ request, env }) {
     });
   }
 
+  
   const origin = url.origin;
-  const message = JSON.stringify({
-  token: data.access_token,
-  provider: "github"
-});
+  const token = data.access_token;
 
   const html = `<!doctype html>
 <html>
 <head><meta charset="utf-8"></head>
 <body>
 <script>
-  const message = ${JSON.stringify(message)};
+  const origin = ${JSON.stringify(origin)};
+  const token = ${JSON.stringify(token)};
+
+  function receiveMessage(event) {
+    if (event.origin !== origin || !window.opener) return;
+
+    if (event.data === "authorizing:github") {
+      window.opener.postMessage(
+        "authorization:github:success:" +
+          JSON.stringify({ token: token, provider: "github" }),
+        origin
+      );
+
+      window.removeEventListener("message", receiveMessage);
+      setTimeout(() => window.close(), 500);
+    }
+  }
+
+  window.addEventListener("message", receiveMessage);
+
   if (window.opener) {
-    window.opener.postMessage(
-  "authorization:github:success:" + message,
-  ${JSON.stringify(origin)}
-);
-setTimeout(() => window.close(), 1000);
+    window.opener.postMessage("authorizing:github", origin);
   } else {
     document.body.textContent =
-      "Autorización completada. Puedes cerrar esta ventana.";
+      "No se encontró la ventana de administración.";
   }
 </script>
 </body>
@@ -83,3 +96,4 @@ setTimeout(() => window.close(), 1000);
     }
   });
 }
+
