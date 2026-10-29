@@ -1,0 +1,27 @@
+
+backend:
+  name: github
+  repo: alejandrorincondesign/alejandrorincondesign-web
+  branch: main
+
+media_folder: "images/projects"
+public_folder: "/images/projects"
+
+collections:
+  - name: "projects"
+    label: "Proyectos"
+    files:
+      - label: "Portafolio"
+        name: "portfolio"
+        file: "content/projects.json"
+        format: "json"
+        fields:
+          - label: "Proyectos"
+            name: "items"
+            widget: "list"
+            fields:
+              - { label: "Título", name: "title", widget: "string" }
+              - { label: "Categoría", name: "category", widget: "select", options: ["Diseño de producto", "Diseño de espacios", "Innovación"] }
+              - { label: "Descripción", name: "description", widget: "text" }
+              - { label: "Fotografía", name: "image", widget: "image", required: false }
+              - { label: "Año", name: "year", widget: "string", required: false }
