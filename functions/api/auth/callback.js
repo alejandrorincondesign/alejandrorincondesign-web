@@ -50,9 +50,9 @@ export async function onRequestGet({ request, env }) {
 
   const origin = url.origin;
   const message = JSON.stringify({
-    token: data.access_token,
-    provider: "github"
-  });
+  token: data.access_token,
+  provider: "github"
+});
 
   const html = `<!doctype html>
 <html>
@@ -62,10 +62,10 @@ export async function onRequestGet({ request, env }) {
   const message = ${JSON.stringify(message)};
   if (window.opener) {
     window.opener.postMessage(
-      "authorization:github:success:" + message,
-      ${JSON.stringify(origin)}
-    );
-    window.close();
+  "authorization:github:success:" + message,
+  ${JSON.stringify(origin)}
+);
+setTimeout(() => window.close(), 1000);
   } else {
     document.body.textContent =
       "Autorización completada. Puedes cerrar esta ventana.";
