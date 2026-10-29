@@ -1,9 +1,10 @@
+
 backend:
-   name: github
-   repo: alejandrorincondesign/alejandrorincondesign-web
-   branch: main
-   base_url: https://alejandrorincondesign.com
-   auth_endpoint: api/auth
+  name: github
+  repo: alejandrorincondesign/alejandrorincondesign-web
+  branch: main
+  base_url: https://alejandrorincondesign.com
+  auth_endpoint: api/auth
 
 media_folder: "images/projects"
 public_folder: "/images/projects"
