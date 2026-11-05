@@ -26,4 +26,12 @@ collections:
               - { label: "Categoría", name: "category", widget: "select", options: ["Diseño de producto", "Diseño de espacios", "Innovación"] }
               - { label: "Descripción", name: "description", widget: "text" }
               - { label: "Fotografía", name: "image", widget: "image", required: false }
+              - label: "Galería de fotografías"
+                name: "gallery"
+                widget: "list"
+                required: false
+                field:
+                  label: "Fotografía adicional"
+                  name: "image"
+                  widget: "image"
               - { label: "Año", name: "year", widget: "string", required: false }
