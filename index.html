@@ -43,7 +43,11 @@ fetch('content/projects.json')
         img.src = encodeURI(photos[0]);
         img.alt = project.title || 'Fotografía del proyecto';
         img.loading = 'lazy';
-        gallery.appendChild(img);
+        img.style.cursor = 'zoom-in';
+        img.title = 'Haz clic para ampliar la fotografía';
+        img.addEventListener('click', () => {
+       openProjectLightbox(photos, Number(gallery.dataset.index || 0));
+   });gallery.appendChild(img);
         if (photos.length > 1) {
           for (const [direction, label, cls, symbol] of [[-1,'Fotografía anterior','prev','‹'],[1,'Fotografía siguiente','next','›']]) {
             const button = document.createElement('button');
@@ -72,4 +76,80 @@ fetch('content/projects.json')
     });
   })
   .catch(error => console.error('Error al cargar proyectos:', error));
-</script></body></html>
+
+function openProjectLightbox(photos, startIndex) {
+  if (!photos.length) return;
+
+  let index = startIndex;
+  const overlay = document.createElement('div');
+
+  overlay.style.cssText = `
+    position:fixed; inset:0; z-index:99999;
+    background:rgba(0,0,0,0.94);
+    display:flex; align-items:center;
+    justify-content:center;
+  `;
+
+  overlay.innerHTML = `
+    <button class="lightbox-close" aria-label="Cerrar"
+      style="position:absolute;top:20px;right:25px;
+      background:none;border:0;color:white;
+      font-size:40px;cursor:pointer">×</button>
+
+    <button class="lightbox-prev" aria-label="Anterior"
+      style="position:absolute;left:15px;
+      background:none;border:0;color:white;
+      font-size:40px;cursor:pointer">‹</button>
+
+    <img style="max-width:90vw;max-height:85vh;
+      object-fit:contain" alt="Fotografía ampliada">
+
+    <button class="lightbox-next" aria-label="Siguiente"
+      style="position:absolute;right:15px;
+      background:none;border:0;color:white;
+      font-size:40px;cursor:pointer">›</button>
+
+    <span class="lightbox-count"
+      style="position:absolute;bottom:20px;
+      color:white;font-size:14px"></span>
+  `;
+
+  const image = overlay.querySelector('img');
+
+  function showPhoto() {
+    image.src = encodeURI(photos[index]);
+    overlay.querySelector('.lightbox-count').textContent =
+      `${index + 1} / ${photos.length}`;
+  }
+
+  function move(direction) {
+    index = (index + direction + photos.length) % photos.length;
+    showPhoto();
+  }
+
+  function close() {
+    document.removeEventListener('keydown', onKey);
+    overlay.remove();
+    document.body.style.overflow = '';
+  }
+
+  function onKey(event) {
+    if (event.key === 'Escape') close();
+    if (event.key === 'ArrowLeft') move(-1);
+    if (event.key === 'ArrowRight') move(1);
+  }
+
+  overlay.querySelector('.lightbox-close').onclick = close;
+  overlay.querySelector('.lightbox-prev').onclick = () => move(-1);
+  overlay.querySelector('.lightbox-next').onclick = () => move(1);
+
+  overlay.addEventListener('click', event => {
+    if (event.target === overlay) close();
+  });
+
+  document.addEventListener('keydown', onKey);
+  document.body.appendChild(overlay);
+  document.body.style.overflow = 'hidden';
+
+  showPhoto();
+}</script></body></html>
