@@ -5,7 +5,10 @@
       "category": "Diseño de producto",
       "description": "DESARROLLO DE PRODUCTOS CON IDENTIDAD CULTURAL Y ALTO CONTENIDO DE DISEÑO",
       "image": "/images/projects/sala-mimbre.png",
-      "year": "2025"
+      "year": "2025",
+      "gallery": [
+        "/images/projects/terraza-talla-madera.png"
+      ]
     },
     {
       "title": "DISEÑO DE ESPACIOS COMERCIALES",
