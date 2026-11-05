@@ -14,7 +14,10 @@
       "title": "DISEÑO DE ESPACIOS COMERCIALES",
       "category": "Diseño de espacios",
       "description": "DISEÑO Y PRODUCCIÓN DE STANDS Y ESPACIOS COMERCIALES",
-      "image": "/images/projects/exhibicion-ar.png"
+      "image": "/images/projects/exhibicion-ar.png",
+      "gallery": [
+        "/images/projects/exhibicion-2.png"
+      ]
     }
   ]
 }
